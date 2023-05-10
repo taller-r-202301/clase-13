@@ -92,12 +92,12 @@ leaflet() %>% addTiles() %>% addPolygons(data=chapinero)
 ## crop puntos con poligono (opcion 2)
 parques_chapi <- st_intersection(x = parques , y = chapinero)
 
-leaflet() %>% addTiles() %>% addPolygons(data=chapinero,col="red") %>% addCircles(data=parques_chapi)
+leaflet() %>% addTiles() %>% addPolygons(data=chapinero,col="red") %>% addPolygons(data=parques_chapi)
 
 ## crop puntos con poligono (opcion 3)
 parques_chapi <- parques[chapinero,]
 
-leaflet() %>% addTiles() %>% addPolygons(data=chapinero,col="red") %>% addCircles(data=parques_chapi)
+leaflet() %>% addTiles() %>% addPolygons(data=chapinero,col="red") %>% addPolygons(data=parques_chapi)
 
 ### **2.5. Distancia a amenities**
   
@@ -109,7 +109,7 @@ my_house$dist_cbd %>% head()
 ## Distancia a muchos puntos
 matrix_dist_bus <- st_distance(x=my_house , y=bus_station)
 
-matrix_dist_bus[1:5,1:5]
+matrix_dist_bus[1,1:5]
 
 min_dist_bus <- apply(matrix_dist_bus , 1 , min)
 
@@ -124,8 +124,6 @@ bog <- opq(bbox = getbb("Bogota Colombia")) %>%
        add_osm_feature(key="boundary", value="administrative") %>% 
        osmdata_sf()
 bog <- bog$osm_multipolygons %>% subset(admin_level==9)
-
-bog <- import("output/bog_upz.rds")
 
 ## basic plot
 ggplot() + geom_sf(data=bog)
